@@ -1,4 +1,4 @@
-const KafkaClient = require('../../tg-chan-kafka');
+const KafkaClient = require('../tg-chan-kafka');
 const Telegram = require('./telegram-bot');
 //const userApi = require( './core/userAPI' );
 const api = new Telegram({

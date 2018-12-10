@@ -17,7 +17,7 @@ new KafkaClient().then( kafkaClient => {
             messages: message.text
           }], () => {
             api.sendMessage({
-              chat_id: message.text,
+              chat_id: message.chat.id,
               text: 'Sended'
             });
           });

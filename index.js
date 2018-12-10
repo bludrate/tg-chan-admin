@@ -14,7 +14,7 @@ new KafkaClient().then( kafkaClient => {
         if ( message.text.indexOf('http') === 0 ) {
           producer.send([{
             topic: 'newChannel',
-            messages: channel
+            messages: message.text
           }], () => {
             api.sendMessage({
               chat_id: message.text,

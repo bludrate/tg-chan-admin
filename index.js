@@ -11,35 +11,51 @@ const api = new Telegram({
 new KafkaClient().then( kafkaClient => {
     kafkaClient.producer.then( producer => {
       api.on('message', message => {
-        const params = message.text.split(' ');
-
-        switch( params[0] ) {
-          case '/add':
-            let channel;
-
-            if ( message.text.indexOf('http') === 0 ) {
-              channel = params[1];
-            } else {
-              channel = 'https://t.me/' + params[1];
-            }
-
-            producer.send([{
-              topic: 'newChannel',
-              messages: channel
-            }], () => {
-              api.sendMessage({
-                chat_id: message.chat.id,
-                text: 'Success'
-              });
-            });
-            break;
-          default:
+        if ( message.text.indexOf('http') === 0 ) {
+          producer.send([{
+            topic: 'newChannel',
+            messages: channel
+          }], () => {
             api.sendMessage({
-              chat_id: message.chat.id,
-              text: 'Wrong command'
+              chat_id: message.text,
+              text: 'Sended'
             });
-            break;
+          });
+        } else {
+          api.sendMessage({
+            chat_id: message.chat.id,
+            text: 'Wrong command'
+          });
         }
+        //const params = message.text.split(' ');
+
+        // switch( params[0] ) {
+        //   case '/add':
+        //     let channel;
+        //
+        //     if ( message.text.indexOf('http') === 0 ) {
+        //       channel = params[1];
+        //     } else {
+        //       channel = 'https://t.me/' + params[1];
+        //     }
+        //
+        //     producer.send([{
+        //       topic: 'newChannel',
+        //       messages: channel
+        //     }], () => {
+        //       api.sendMessage({
+        //         chat_id: message.chat.id,
+        //         text: 'Success'
+        //       });
+        //     });
+        //     break;
+        //   default:
+        //     api.sendMessage({
+        //       chat_id: message.chat.id,
+        //       text: 'Wrong command'
+        //     });
+        //     break;
+        // }
     });
   } );
 });

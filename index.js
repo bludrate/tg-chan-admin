@@ -11,14 +11,16 @@ const api = new Telegram({
 new KafkaClient().then( kafkaClient => {
     kafkaClient.producer.then( producer => {
       api.on('message', message => {
-        switch( message.text ) {
+        const params = message.text.split(' ');
+
+        switch( params[0] ) {
           case '/add':
             let channel;
 
             if ( message.text.indexOf('http') === 0 ) {
-              channel = message.text;
+              channel = params[1];
             } else {
-              channel = 'https://t.me/' + message.text;
+              channel = 'https://t.me/' + params[1];
             }
 
             producer.send([{
